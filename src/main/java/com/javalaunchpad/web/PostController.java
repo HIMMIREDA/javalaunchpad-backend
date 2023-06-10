@@ -3,10 +3,14 @@ package com.javalaunchpad.web;
 import com.javalaunchpad.dto.request.UpdatePostContentRequest;
 import com.javalaunchpad.entity.Comment;
 import com.javalaunchpad.entity.Post;
+import com.javalaunchpad.entity.Tag;
 import com.javalaunchpad.entity.enumeration.PostStatus;
 import com.javalaunchpad.exception.RessourceNotFoundException;
+import com.javalaunchpad.repository.PostRepository;
 import com.javalaunchpad.service.ImageStorageService;
 import com.javalaunchpad.service.PostService;
+import com.javalaunchpad.service.TagService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +19,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/posts")
+@AllArgsConstructor
 public class PostController {
 
     private final PostService postService;
     private final ImageStorageService imageStorageService ;
+    private final TagService tagService ;
+    private final PostRepository postRepository ;
 
-    public PostController(PostService postService , ImageStorageService imageStorageService) {
-        this.imageStorageService = imageStorageService ;
-        this.postService = postService;
-    }
 
     // tested
     @PostMapping
@@ -120,5 +122,18 @@ public class PostController {
         }
     }
     // Other endpoints as per your requirements
+
+
+    @PostMapping("/{postId}/tags/{tagId}")
+    public void assignTagToPost(@PathVariable Long postId, @PathVariable Long tagId) throws RessourceNotFoundException {
+        // Fetch the Post and Tag objects from the database using their respective IDs
+        Post post = postService.getPostById(postId);
+        Tag tag = tagService.getTagById(tagId);
+        // Assign the Tag to the Post
+        post.getTags().add(tag);
+        // Save the changes
+        postRepository.save(post);
+    }
+
 }
 
