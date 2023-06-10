@@ -1,1 +1,1 @@
-web: java -jar target/javalaunchpad-1.0.jar
+web: java -Dserver.port=$PORT -jar target/javalaunchpad-1.0.jar
