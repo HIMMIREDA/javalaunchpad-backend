@@ -1,2 +1,2 @@
-web: java -jar target/javalaunchpad-0.0.1-SNAPSHOT.jar --server.port=$PORT
+web: java -Dserver.port=$PORT -jar target/javalaunchpad-0.0.1-SNAPSHOT.jar
 
