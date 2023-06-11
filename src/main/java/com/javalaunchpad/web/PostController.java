@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/posts")
 @AllArgsConstructor
+@CrossOrigin
 public class PostController {
 
     private final PostService postService;
