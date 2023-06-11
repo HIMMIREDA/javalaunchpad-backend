@@ -1,8 +1,8 @@
 package com.javalaunchpad.service.implementation;
 
-import com.javalaunchpad.entity.User;
 import com.javalaunchpad.exception.RessourceNotFoundException;
-import com.javalaunchpad.repository.UserRepository;
+import com.javalaunchpad.security.entity.User;
+import com.javalaunchpad.security.repo.UserRepository;
 import com.javalaunchpad.service.UserService;
 import org.springframework.stereotype.Service;
 

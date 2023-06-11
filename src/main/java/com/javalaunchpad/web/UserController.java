@@ -1,7 +1,7 @@
 package com.javalaunchpad.web;
 
-import com.javalaunchpad.entity.User;
 import com.javalaunchpad.exception.RessourceNotFoundException;
+import com.javalaunchpad.security.entity.User;
 import com.javalaunchpad.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

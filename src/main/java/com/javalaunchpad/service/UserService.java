@@ -1,8 +1,8 @@
 package com.javalaunchpad.service;
 
 
-import com.javalaunchpad.entity.User;
 import com.javalaunchpad.exception.RessourceNotFoundException;
+import com.javalaunchpad.security.entity.User;
 
 import java.util.List;
 
