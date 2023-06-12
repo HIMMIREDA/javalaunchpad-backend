@@ -31,7 +31,10 @@ public class SecurityConfig {
     //@formatter:off
     httpSecurity
           .authorizeHttpRequests()
-          .requestMatchers("/api/auth/**", "/api/tags/*").permitAll()
+          .requestMatchers("/api/auth/**").permitAll()
+          .and()
+          .authorizeHttpRequests()
+          .requestMatchers("/api/tags/**").permitAll()
           .anyRequest().authenticated()
         .and()
           .sessionManagement()
