@@ -12,5 +12,6 @@ public interface UserService {
     List<User> getAllUsers();
     void deleteUser(Long userId);
     // Other methods as per your requirements
+    User getUserByEmail(String id) throws RessourceNotFoundException;
 }
 

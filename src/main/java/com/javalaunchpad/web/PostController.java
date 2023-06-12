@@ -7,9 +7,15 @@ import com.javalaunchpad.entity.Tag;
 import com.javalaunchpad.entity.enumeration.PostStatus;
 import com.javalaunchpad.exception.RessourceNotFoundException;
 import com.javalaunchpad.repository.PostRepository;
+import com.javalaunchpad.security.entity.User;
+import com.javalaunchpad.security.utils.JwtTokenProvider;
 import com.javalaunchpad.service.ImageStorageService;
 import com.javalaunchpad.service.PostService;
 import com.javalaunchpad.service.TagService;
+import com.javalaunchpad.service.UserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +36,27 @@ public class PostController {
     private final ImageStorageService imageStorageService ;
     private final TagService tagService ;
     private final PostRepository postRepository ;
+    private final UserService userService ;
 
+    private final JwtTokenProvider jwtTokenProvider;
 
     // tested
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+    public ResponseEntity<Post> createPost(@RequestBody Post post , HttpServletRequest request) throws RessourceNotFoundException {
+        User user = null ;
+        // authenticated author
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            // Extract the token from the authorization header
+            String jwtToken = authorizationHeader.substring(7);
+
+            // Parse the JWT token to get the claims
+            String authenticatedUser = jwtTokenProvider.getUsername(jwtToken);
+
+            // Extract the authenticated user from the claims
+           user = userService.getUserByEmail(authenticatedUser);
+        }
+        post.setAuthor(user);
         Post createdPost = postService.createPost(post);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }

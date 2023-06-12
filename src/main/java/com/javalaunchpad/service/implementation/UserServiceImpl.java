@@ -42,6 +42,11 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
     }
 
+    @Override
+    public User getUserByEmail(String id) throws RessourceNotFoundException {
+      return  userRepository.findByUsername(id).orElseThrow(() -> new RessourceNotFoundException("User not found"));
+    }
+
     // Other methods as per your requirements
 }
 
