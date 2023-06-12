@@ -27,7 +27,7 @@ public class SecurityConfig {
 
     httpSecurity.headers().frameOptions().disable();
 
-    httpSecurity.cors().and().csrf().disable();
+    httpSecurity.csrf().disable();
     //@formatter:off
     httpSecurity
           .authorizeHttpRequests()
