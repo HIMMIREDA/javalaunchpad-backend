@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public interface PostService {
-    Post createPost(Post post);
+    Post createPost(Post post) throws RessourceNotFoundException;
     Post getPostById(Long postId) throws RessourceNotFoundException;
     List<Post> getAllPosts(Principal principal);
     void deletePost(Long postId);

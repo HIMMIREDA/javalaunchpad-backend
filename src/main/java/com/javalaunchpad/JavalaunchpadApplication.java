@@ -32,7 +32,13 @@ public class JavalaunchpadApplication implements CommandLineRunner {
 		Role role = new Role(null ,"ADMIN");
 		Set<Role> roleSet = new HashSet<>();
 		roleSet.add(role);
+		Role role1 = new Role(null ,"USER");
+		Set<Role> roleSet1 = new HashSet<>();
+		roleSet1.add(role1);
 		roleRepository.save(role);
-		userRepository.save(new User(null , "hamza.nassour13@gmail.com" , passwordEncoder.encode("Hnas2018") ,roleSet ,true));
+		roleRepository.save(role1);
+		userRepository.save(new User(null ,"hamza" , "nassour", "hamza.nassour13@gmail.com" , passwordEncoder.encode("Hnas2018") ,roleSet ,true));
+		userRepository.save(new User(null ,"hamza" , "nassour", "hamza.nassour@gmail.com" , passwordEncoder.encode("Hnas2018") ,roleSet1 ,true));
+
 	}
 }

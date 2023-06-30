@@ -9,7 +9,10 @@ import com.javalaunchpad.mapper.PostMapper;
 import com.javalaunchpad.repository.CommentRepository;
 import com.javalaunchpad.repository.ImageRepository;
 import com.javalaunchpad.repository.PostRepository;
+import com.javalaunchpad.security.User;
 import com.javalaunchpad.service.PostService;
+import com.javalaunchpad.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -25,21 +28,35 @@ public class PostServiceImpl implements PostService {
 
     private final ImageRepository imageRepository ;
 
+    private final UserService userService ;
+
     private final PostMapper postMapper ;
 
-    public PostServiceImpl(PostRepository postRepository , CommentRepository commentRepository , ImageRepository imageRepository , PostMapper postMapper ) {
+    public PostServiceImpl(PostRepository postRepository , CommentRepository commentRepository , ImageRepository imageRepository , PostMapper postMapper , UserService userService ) {
         this.imageRepository = imageRepository;
         this.commentRepository = commentRepository ;
         this.postRepository = postRepository;
         this.postMapper = postMapper ;
+        this.userService = userService ;
     }
 
     @Override
-    public Post createPost(Post post) {
+    public Post createPost(Post post) throws RessourceNotFoundException {
+        User user = getUser();
+        post.setAuthor(user);
         // Implement the logic to create a post
         post.setStatus(PostStatus.DRAFT); // Set the initial status as draft
         return postRepository.save(post);
     }
+
+    private User getUser() throws RessourceNotFoundException {
+        // get the Authenticated User from the SecurityContext
+        User user = null ;
+        String principal = SecurityContextHolder.getContext().getAuthentication().getName();
+        user = userService.getUserByEmail(principal);
+        return user;
+    }
+
 
     public Post updatePostContent(Long postId, String content) throws RessourceNotFoundException {
         Post post = getPostById(postId);

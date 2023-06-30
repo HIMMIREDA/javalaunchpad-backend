@@ -13,11 +13,17 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String firstname ;
+
+    private String lastname ;
+
     @Column(nullable = false, unique = true)
     private String username;
 
