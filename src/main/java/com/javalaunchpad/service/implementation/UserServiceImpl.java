@@ -1,10 +1,10 @@
 package com.javalaunchpad.service.implementation;
 
 import com.javalaunchpad.exception.RessourceNotFoundException;
-import com.javalaunchpad.security.entity.User;
-import com.javalaunchpad.security.repo.UserRepository;
+import com.javalaunchpad.security.User;
 import com.javalaunchpad.service.UserService;
 import org.springframework.stereotype.Service;
+import com.javalaunchpad.security.UserRepository;
 
 import java.util.List;
 
@@ -44,8 +44,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String id) throws RessourceNotFoundException {
-      return  userRepository.findByUsername(id).orElseThrow(() -> new RessourceNotFoundException("User not found"));
+        return null;
     }
+
+    /*@Override
+    public User getUserByEmail(String id) throws RessourceNotFoundException {
+      return  userRepository.findByUsername(id).orElseThrow(() -> new RessourceNotFoundException("User not found"));
+    }*/
 
     // Other methods as per your requirements
 }

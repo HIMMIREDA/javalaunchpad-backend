@@ -12,7 +12,7 @@ import java.util.Objects;
 public interface PostService {
     Post createPost(Post post);
     Post getPostById(Long postId) throws RessourceNotFoundException;
-    Object getAllPosts(Principal principal);
+    List<Post> getAllPosts(Principal principal);
     void deletePost(Long postId);
     Comment addCommentToPost(Long postId, Comment comment) throws RessourceNotFoundException ;
     List<Comment> getCommentsForPost(Long postId) throws RessourceNotFoundException ;

@@ -71,13 +71,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Object getAllPosts(Principal principal) {
+    public List<Post> getAllPosts(Principal principal) {
         // Implement the logic to retrieve all posts
-        List<Post> allPosts = postRepository.findAll();
-        if (isAdmin(principal)){
-            return  postMapper.toPostAdminResponseList(allPosts);
-        }
-        return allPosts ;
+       return postRepository.findAll();
     }
 
     @Override

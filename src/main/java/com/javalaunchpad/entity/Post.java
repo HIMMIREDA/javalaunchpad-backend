@@ -1,7 +1,7 @@
 package com.javalaunchpad.entity;
 
 import com.javalaunchpad.entity.enumeration.PostStatus;
-import com.javalaunchpad.security.entity.User;
+import com.javalaunchpad.security.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
