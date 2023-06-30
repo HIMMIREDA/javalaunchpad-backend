@@ -3,10 +3,8 @@ package com.javalaunchpad.entity;
 import com.javalaunchpad.entity.enumeration.PostStatus;
 import com.javalaunchpad.security.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,6 +50,8 @@ public class Post {
     private Set<Tag> tags;
 
     private Integer commentCount;
+
+    private Integer views;
 
 
     @Enumerated(EnumType.STRING)

@@ -33,9 +33,11 @@ public class PostController {
     private final PostRepository postRepository ;
 
     // this method will be used for update also (if id != null hibernate will only update not create)
+    // tested tested
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<Post> createPost(@RequestBody Post post) throws RessourceNotFoundException {
+        System.out.println(post);
         Post createdPost = postService.createPost(post);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
@@ -62,8 +64,8 @@ public class PostController {
 
     // tested
     @GetMapping
-    public ResponseEntity< Object> getAllPosts(Principal principal) {
-        Object posts = postService.getAllPosts(principal);
+    public ResponseEntity< Object> getAllPosts() {
+        Object posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
 

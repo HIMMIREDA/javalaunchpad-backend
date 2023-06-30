@@ -1,5 +1,6 @@
 package com.javalaunchpad.service.implementation;
 
+import com.javalaunchpad.dto.response.PostSuperAdminResponse;
 import com.javalaunchpad.entity.Comment;
 import com.javalaunchpad.entity.Image;
 import com.javalaunchpad.entity.Post;
@@ -12,13 +13,13 @@ import com.javalaunchpad.repository.PostRepository;
 import com.javalaunchpad.security.User;
 import com.javalaunchpad.service.PostService;
 import com.javalaunchpad.service.UserService;
+import com.javalaunchpad.utils.AuthorizationUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.javalaunchpad.utils.AuthorizationUtils.isAdmin;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -44,6 +45,7 @@ public class PostServiceImpl implements PostService {
     public Post createPost(Post post) throws RessourceNotFoundException {
         User user = getUser();
         post.setAuthor(user);
+        post.setLastUpdate(LocalDateTime.now());
         // Implement the logic to create a post
         post.setStatus(PostStatus.DRAFT); // Set the initial status as draft
         return postRepository.save(post);
@@ -88,7 +90,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getAllPosts(Principal principal) {
+    public Object getAllPosts() {
+        if (AuthorizationUtils.isSuperAdmin()){
+            // mapping to PostSuperAdminResponse
+            return  postRepository.findAll().stream().map(postMapper::toPostSuperAdminResponse).toList();
+        }
         // Implement the logic to retrieve all posts
        return postRepository.findAll();
     }
