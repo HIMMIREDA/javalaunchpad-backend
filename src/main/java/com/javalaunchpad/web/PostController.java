@@ -41,6 +41,13 @@ public class PostController {
         Post createdPost = postService.createPost(post);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
+    // tested tested
+    @GetMapping
+    public ResponseEntity< Object> getAllPosts() {
+        Object posts = postService.getAllPosts();
+        return ResponseEntity.ok(posts);
+    }
+
     // tested
     @PutMapping("/{postId}/status")
     public ResponseEntity<Post> updatePostStatus(
@@ -60,13 +67,6 @@ public class PostController {
     public ResponseEntity<Post> getPostById(@PathVariable Long postId) throws RessourceNotFoundException {
         Post post = postService.getPostById(postId);
         return ResponseEntity.ok(post);
-    }
-
-    // tested
-    @GetMapping
-    public ResponseEntity< Object> getAllPosts() {
-        Object posts = postService.getAllPosts();
-        return ResponseEntity.ok(posts);
     }
 
     // tested
