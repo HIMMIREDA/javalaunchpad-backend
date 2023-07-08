@@ -7,11 +7,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class AuthorizationUtils {
 
     public static boolean isSuperAdmin() {
-        var authorities = getUser().getAuthorities();
-        return authorities.contains(new SimpleGrantedAuthority("SUPER_ADMIN"));
+        UserDetails  user = getUser() ;
+        if (user != null){
+            var authorities = getUser().getAuthorities();
+            return authorities.contains(new SimpleGrantedAuthority("SUPER_ADMIN"));
+        }
+        return false ;
     }
     public static UserDetails getUser() {
-        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal != "anonymousUser"){
+            return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+        return null ;
     }
 }
 

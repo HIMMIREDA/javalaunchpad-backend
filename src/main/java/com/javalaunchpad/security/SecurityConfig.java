@@ -47,7 +47,8 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests()
                     .requestMatchers("/h2-console/**").permitAll()
-                .anyRequest().authenticated()
+                    .requestMatchers("/api/posts/**").permitAll()
+                    .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
         return httpSecurity.build();
