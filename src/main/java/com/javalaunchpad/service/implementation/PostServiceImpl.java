@@ -78,11 +78,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> searchPosts(String keyword, Long categoryId, Long tagId) {
-        return null;
-    }
-
-    @Override
     public Post getPostById(Long postId) throws RessourceNotFoundException {
         // Implement the logic to retrieve a post by ID
         return postRepository.findById(postId)

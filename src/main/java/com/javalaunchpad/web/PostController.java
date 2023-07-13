@@ -99,14 +99,6 @@ public class PostController {
         }
     }
 
-    // Endpoint to search posts
-    @GetMapping("/search")
-    public List<Post> searchPosts(@RequestParam(name = "keyword") String keyword,
-                                  @RequestParam(name = "category", required = false) Long categoryId,
-                                  @RequestParam(name = "tag", required = false) Long tagId) {
-        return postService.searchPosts(keyword , categoryId , tagId);
-    }
-
     @PostMapping("/{postId}/images")
     public ResponseEntity<String> uploadImage(@PathVariable Long postId,
                                               @RequestParam("file") MultipartFile file) {

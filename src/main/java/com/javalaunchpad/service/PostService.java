@@ -18,7 +18,6 @@ public interface PostService {
     List<Comment> getCommentsForPost(Long postId) throws RessourceNotFoundException ;
     Post updatePostStatus(Long postId, PostStatus status) throws RessourceNotFoundException ;
     List<Post> getPublishedPosts() ;
-    List<Post> searchPosts(String keyword, Long categoryId, Long tagId) ;
     Comment updateComment(Long commentId, String content) throws RessourceNotFoundException ;
     void deleteComment(Long commentId) throws RessourceNotFoundException ;
     Post updatePostContent(Long postId, String content) throws RessourceNotFoundException ;
