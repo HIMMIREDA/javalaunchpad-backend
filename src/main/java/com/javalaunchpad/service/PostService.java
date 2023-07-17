@@ -1,9 +1,11 @@
 package com.javalaunchpad.service;
 
+import com.javalaunchpad.dto.request.PostSearchRequest;
 import com.javalaunchpad.entity.Comment;
 import com.javalaunchpad.entity.Post;
 import com.javalaunchpad.entity.enumeration.PostStatus;
 import com.javalaunchpad.exception.RessourceNotFoundException;
+import org.springframework.data.domain.Page;
 
 import java.security.Principal;
 import java.util.List;
@@ -22,6 +24,7 @@ public interface PostService {
     void deleteComment(Long commentId) throws RessourceNotFoundException ;
     Post updatePostContent(Long postId, String content) throws RessourceNotFoundException ;
     Post addImageToPost(Long postId, Long imageId) throws RessourceNotFoundException ;
+    Page<Post> searchProduct(int i, int count, PostSearchRequest postSearchRequest, String sortBy, String sortOrder);
     // Other methods as per your requirements
 }
 

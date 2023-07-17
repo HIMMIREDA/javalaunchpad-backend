@@ -1,6 +1,8 @@
 package com.javalaunchpad.web;
 
+import com.javalaunchpad.dto.request.PostSearchRequest;
 import com.javalaunchpad.dto.request.UpdatePostContentRequest;
+import com.javalaunchpad.dto.response.GetItemsResponse;
 import com.javalaunchpad.entity.Comment;
 import com.javalaunchpad.entity.Post;
 import com.javalaunchpad.entity.Tag;
@@ -11,6 +13,7 @@ import com.javalaunchpad.service.ImageStorageService;
 import com.javalaunchpad.service.PostService;
 import com.javalaunchpad.service.TagService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +49,25 @@ public class PostController {
     public ResponseEntity< Object> getAllPosts() {
         Object posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<GetItemsResponse<Post>> getAllProducts(
+            @RequestParam(value = "page", defaultValue = "1") int numPage,
+            @RequestParam(value = "count", defaultValue = "10") int count,
+            @RequestParam(value = "sortBy", defaultValue = "publicationDate") String sortBy,
+            @RequestParam(value = "sortOrder", defaultValue = "DESC") String sortOrder,
+            @RequestBody(required = false) PostSearchRequest postSearchRequest
+    ) {
+        Page<Post> postsPage = postService.searchProduct(numPage - 1, count, postSearchRequest, sortBy, sortOrder);
+        return ResponseEntity.ok(
+                GetItemsResponse.<Post>builder()
+                        .items(postsPage.getContent())
+                        .currentPage(postsPage.getNumber() + 1)
+                        .totalItems(postsPage.getTotalElements())
+                        .totalPages(postsPage.getTotalPages())
+                        .build()
+        );
     }
 
     // tested
