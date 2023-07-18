@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableMethodSecurity
 public class SecurityConfig {
 
@@ -33,10 +33,17 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
+    private static final String[] AUTH_WHITELIST = {
+            "/h2-console/**",
+            "/api/posts/**",
+            "/login",
+    };
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.cors(Customizer.withDefaults());
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.formLogin( httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
                 .successHandler((request, response, authentication) -> response.setStatus(HttpStatus.OK.value()))
                 .failureHandler((request, response, exception) -> response.setStatus(HttpStatus.UNAUTHORIZED.value()))
@@ -45,23 +52,29 @@ public class SecurityConfig {
         httpSecurity.logout().deleteCookies("JSESSIONID").clearAuthentication(true);
         httpSecurity.headers().frameOptions().disable();
         httpSecurity
-                .authorizeHttpRequests()
-                    .requestMatchers("/h2-console/**").permitAll()
-                    .requestMatchers("/api/posts/**").permitAll()
-                    .anyRequest().authenticated()
-                .and()
+                .authorizeHttpRequests(
+                        authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry.requestMatchers(AUTH_WHITELIST).permitAll()
+                                .anyRequest().authenticated()
+                )
                 .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
         return httpSecurity.build();
     }
+
+
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration corsConfiguration() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8081"));
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(Arrays.asList("Access-Control-Allow-Headers","Access-Control-Allow-Origin","Access-Control-Request-Method", "Access-Control-Request-Headers","Origin","Cache-Control", "Content-Type", "Authorization"));
+        configuration.setAllowedOrigins(List.of("http://localhost:8081/"));
         configuration.setAllowedMethods(Arrays.asList("DELETE", "GET", "POST", "PATCH", "PUT"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "X-XSRF-TOKEN", "Authorization"));
+        configuration.setAllowCredentials(true);
+        return configuration;
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", corsConfiguration());
         return source;
     }
 }
