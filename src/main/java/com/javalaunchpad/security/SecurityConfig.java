@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -38,6 +39,7 @@ public class SecurityConfig {
             "/h2-console/**",
             "/api/posts/**",
             "/login",
+            "/logout/**"
     };
 
     @Bean
@@ -49,7 +51,9 @@ public class SecurityConfig {
                 .failureHandler((request, response, exception) -> response.setStatus(HttpStatus.UNAUTHORIZED.value()))
         );
         httpSecurity.httpBasic(Customizer.withDefaults());
-        httpSecurity.logout().deleteCookies("JSESSIONID").clearAuthentication(true);
+        httpSecurity.logout(
+                httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.deleteCookies("JSESSIONID").clearAuthentication(true).logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))
+        );
         httpSecurity.headers().frameOptions().disable();
         httpSecurity
                 .authorizeHttpRequests(
