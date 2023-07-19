@@ -189,7 +189,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<Post> searchProduct(int numPage, int pageCount, PostSearchRequest postSearchRequest, String sortBy, String sortOrder) {
+    public Page<Post> searchPosts(int numPage, int pageCount, PostSearchRequest postSearchRequest, String sortBy, String sortOrder) {
         PostSpecificationBuilder builder = new PostSpecificationBuilder();
         if (postSearchRequest != null) {
             List<SearchCriteria> criteriaList = postSearchRequest.getSearchCriteriaList();
@@ -202,7 +202,7 @@ public class PostServiceImpl implements PostService {
         }
         Sort sortCriteria = Sort.by(Sort.Direction.DESC, "publicationDate");
         if (sortByFieldsList.contains(sortBy)) {
-            sortCriteria = Sort.by(sortOrder.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy);
+            sortCriteria = Sort.by((sortOrder != null && sortOrder.equalsIgnoreCase("ASC")) ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy);
         }
         Pageable paging = PageRequest.of(numPage, pageCount, sortCriteria);
         return postSearchRequest == null ?

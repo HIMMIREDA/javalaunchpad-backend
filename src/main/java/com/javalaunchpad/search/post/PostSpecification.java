@@ -9,6 +9,8 @@ import com.javalaunchpad.security.User;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -195,15 +197,27 @@ public class PostSpecification implements Specification<Post> {
                 return cb.isNotNull(root.get(searchCriteria.getFilterKey()));
             }
             case GREATER_THAN -> {
+                if (searchCriteria.getFilterKey().toLowerCase().contains("date")) {
+                    return cb.greaterThan(root.<LocalDateTime>get(searchCriteria.getFilterKey()), LocalDateTime.parse(searchCriteria.getValue().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                }
                 return cb.greaterThan(root.<String>get(searchCriteria.getFilterKey()), searchCriteria.getValue().toString());
             }
             case GREATER_THAN_EQUAL -> {
+                if (searchCriteria.getFilterKey().toLowerCase().contains("date")) {
+                    return cb.greaterThanOrEqualTo(root.<LocalDateTime>get(searchCriteria.getFilterKey()), LocalDateTime.parse(searchCriteria.getValue().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                }
                 return cb.greaterThanOrEqualTo(root.<String>get(searchCriteria.getFilterKey()), searchCriteria.getValue().toString());
             }
             case LESS_THAN -> {
+                if (searchCriteria.getFilterKey().toLowerCase().contains("date")) {
+                    return cb.lessThan(root.<LocalDateTime>get(searchCriteria.getFilterKey()), LocalDateTime.parse(searchCriteria.getValue().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                }
                 return cb.lessThan(root.<String>get(searchCriteria.getFilterKey()), searchCriteria.getValue().toString());
             }
             case LESS_THAN_EQUAL -> {
+                if (searchCriteria.getFilterKey().toLowerCase().contains("date")) {
+                    return cb.lessThanOrEqualTo(root.<LocalDateTime>get(searchCriteria.getFilterKey()), LocalDateTime.parse(searchCriteria.getValue().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                }
                 return cb.lessThanOrEqualTo(root.<String>get(searchCriteria.getFilterKey()), searchCriteria.getValue().toString());
             }
             case IN -> {

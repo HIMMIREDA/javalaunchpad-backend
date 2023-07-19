@@ -7,9 +7,7 @@ import com.javalaunchpad.entity.enumeration.PostStatus;
 import com.javalaunchpad.exception.RessourceNotFoundException;
 import org.springframework.data.domain.Page;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 
 public interface PostService {
     Post createPost(Post post) throws RessourceNotFoundException;
@@ -24,7 +22,7 @@ public interface PostService {
     void deleteComment(Long commentId) throws RessourceNotFoundException ;
     Post updatePostContent(Long postId, String content) throws RessourceNotFoundException ;
     Post addImageToPost(Long postId, Long imageId) throws RessourceNotFoundException ;
-    Page<Post> searchProduct(int i, int count, PostSearchRequest postSearchRequest, String sortBy, String sortOrder);
+    Page<Post> searchPosts(int numPage, int count, PostSearchRequest postSearchRequest, String sortBy, String sortOrder);
     // Other methods as per your requirements
 }
 

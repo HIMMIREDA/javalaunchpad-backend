@@ -1,6 +1,7 @@
 package com.javalaunchpad.search;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class SearchCriteria {
 
 //    name of field that we will filter by ex: title, content, tag.name, category.name, author.name,..

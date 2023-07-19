@@ -59,7 +59,7 @@ public class PostController {
             @RequestParam(value = "sortOrder", defaultValue = "DESC") String sortOrder,
             @RequestBody(required = false) PostSearchRequest postSearchRequest
     ) {
-        Page<Post> postsPage = postService.searchProduct(numPage - 1, count, postSearchRequest, sortBy, sortOrder);
+        Page<Post> postsPage = postService.searchPosts(numPage - 1, count, postSearchRequest, sortBy, sortOrder);
         return ResponseEntity.ok(
                 GetItemsResponse.<Post>builder()
                         .items(postsPage.getContent())

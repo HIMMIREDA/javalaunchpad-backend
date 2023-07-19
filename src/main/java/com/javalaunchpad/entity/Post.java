@@ -84,7 +84,6 @@ public class Post {
         image.setPost(null);
     }
 
-
     // Additional fields like featured image, meta information, and status
 
     // Constructors, getters, setters, and other methods
